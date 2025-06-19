@@ -19,10 +19,6 @@ pipeline {
             steps {
                 echo '=== Starting Install dependencies ==='
                 sh '''
-                    echo "Creating virtual environment..."
-                    python3 -m venv venv
-                    echo "Activating virtual environment..."
-                    . venv/bin/activate
                     echo "Upgrading pip..."
                     pip3 install --upgrade pip
                     echo "Installing requirements..."
