@@ -1,20 +1,54 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-            args '-u'
-        }
-    }// ou un label correspondant à ton agent avec Docker
+    agent any
+
     stages {
-        stage('Run inside Docker') {
+        stage('Checkout') {
             steps {
-                sh 'docker run --rm -v $PWD:/app -w /app python:3.10 sh -c "python3 -m venv venv && . venv/bin/activate && pip install -r requirements.txt && pytest --junitxml=report.xml"'
+                echo '=== Starting Checkout ==='
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/3l4un1ck/integration-continue.git',
+                        credentialsId: 'github-creds'
+                    ]]
+                ])
+                echo '=== Finished Checkout ==='
             }
         }
-        stage('Publish report') {
+        stage('Install dependencies') {
             steps {
-                junit 'report.xml'
+                echo '=== Starting Install dependencies ==='
+                sh '''
+                    echo "Creating virtual environment..."
+                    python3 -m venv venv
+                    echo "Activating virtual environment..."
+                    . venv/bin/activate
+                    echo "Upgrading pip..."
+                    pip3 install --upgrade pip
+                    echo "Installing requirements..."
+                    pip3 install -r requirements.txt
+                '''
+                echo '=== Finished Install dependencies ==='
             }
+        }
+        stage('Run tests') {
+            steps {
+                echo '=== Starting Run tests ==='
+                sh '''
+                    echo "Activating virtual environment..."
+                    . venv/bin/activate
+                    echo "Running pytest..."
+                    pytest --cov=todo tests/ --junitxml=test-results.xml
+                '''
+                echo '=== Finished Run tests ==='
+            }
+        }
+    }
+
+    post {
+        always {
+            echo '=== Publishing JUnit test results ==='
+            junit 'test-results.xml'
         }
     }
 }
