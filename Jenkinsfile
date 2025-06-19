@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.10'
+            args '-u'
+        }
+    }
 
     stages {
         stage('Checkout') {
@@ -19,6 +24,12 @@ pipeline {
             steps {
                 echo '=== Starting Install dependencies ==='
                 sh '''
+                    echo "Creating virtual environment..."
+                    python3 -m venv venv
+                    echo "Activating virtual environment..."
+                    . venv/bin/activate
+                    echo "Upgrading pip..."
+                    pip3 install --upgrade pip
                     echo "Installing requirements..."
                     pip3 install -r requirements.txt
                 '''
