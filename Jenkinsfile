@@ -19,18 +19,10 @@ pipeline {
             steps {
                 echo '=== Starting Install dependencies ==='
                 sh '''
-                    echo "Updating apt..."
-                    sudo apt-get update
-                    echo "Installing python3-venv..."
-                    sudo apt-get install -y python3-venv
-                    echo "Creating virtual environment..."
-                    python3 -m venv venv
-                    echo "Activating virtual environment..."
-                    . venv/bin/activate
                     echo "Upgrading pip..."
-                    pip install --upgrade pip
+                    pip3 install --upgrade pip
                     echo "Installing requirements..."
-                    pip install -r requirements.txt
+                    pip3 install -r requirements.txt
                 '''
                 echo '=== Finished Install dependencies ==='
             }
