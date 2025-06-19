@@ -1,5 +1,10 @@
 pipeline {
-    agent { label 'docker' } // ou un label correspondant à ton agent avec Docker
+    agent {
+        docker {
+            image 'python:3.10'
+            args '-u'
+        }
+    }// ou un label correspondant à ton agent avec Docker
     stages {
         stage('Run inside Docker') {
             steps {
