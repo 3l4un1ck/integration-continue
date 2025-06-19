@@ -19,11 +19,6 @@ pipeline {
             steps {
                 echo '=== Starting Install dependencies ==='
                 sh '''
-                    echo "Updating apt..."
-                    apt-get update
-                    echo "Installing python3-venv..."
-                    apt-get install -y python3-venv
-                    apt install python3.12-venv
                     echo "Creating virtual environment..."
                     python3 -m venv venv
                     echo "Activating virtual environment..."
