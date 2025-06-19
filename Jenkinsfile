@@ -20,9 +20,9 @@ pipeline {
                 echo '=== Starting Install dependencies ==='
                 sh '''
                     echo "Upgrading pip..."
-                    pip3 install --upgrade pip
+                    pip install --upgrade pip
                     echo "Installing requirements..."
-                    pip3 install -r requirements.txt
+                    pip install -r requirements.txt
                 '''
                 echo '=== Finished Install dependencies ==='
             }
