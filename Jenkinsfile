@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/<ton-username>/todo_manager.git'
+                git 'https://github.com/3l4un1ck/integration-continue.git'
             }
         }
         stage('Install dependencies') {
