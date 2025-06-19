@@ -5,7 +5,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '=== Starting Checkout ==='
-                git 'https://github.com/3l4un1ck/integration-continue.git'
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/3l4un1ck/integration-continue.git',
+                        credentialsId: 'github-creds'
+                    ]]
+                ])
                 echo '=== Finished Checkout ==='
             }
         }
