@@ -15,32 +15,18 @@ pipeline {
                 echo '=== Finished Checkout ==='
             }
         }
-        stage('Install dependencies') {
+        stage('Build Docker image') {
             steps {
-                echo '=== Starting Install dependencies ==='
-                sh '''
-                    echo "Creating virtual environment..."
-                    python3 -m venv venv
-                    echo "Activating virtual environment..."
-                    . venv/bin/activate
-                    echo "Upgrading pip..."
-                    pip3 install --upgrade pip
-                    echo "Installing requirements..."
-                    pip3 install -r requirements.txt
-                '''
-                echo '=== Finished Install dependencies ==='
+                echo '=== Building Docker image ==='
+                sh 'docker-compose build'
+                echo '=== Finished building Docker image ==='
             }
         }
-        stage('Run tests') {
+        stage('Run tests in Docker') {
             steps {
-                echo '=== Starting Run tests ==='
-                sh '''
-                    echo "Activating virtual environment..."
-                    . venv/bin/activate
-                    echo "Running pytest..."
-                    pytest --cov=todo tests/ --junitxml=test-results.xml
-                '''
-                echo '=== Finished Run tests ==='
+                echo '=== Running tests in Docker ==='
+                sh 'docker-compose up --abort-on-container-exit'
+                echo '=== Finished running tests in Docker ==='
             }
         }
     }

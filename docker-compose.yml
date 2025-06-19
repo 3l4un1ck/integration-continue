@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+  todo_manager:
+    build: .
+    container_name: todo_manager_app
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["/bin/bash", "execute.sh"] 
