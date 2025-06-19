@@ -29,7 +29,7 @@ pipeline {
 
     post {
         always {
-            junit 'pytest --junitxml=test-results.xml'
+            junit 'test-results.xml'
         }
     }
 }
